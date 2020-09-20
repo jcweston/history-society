@@ -12,8 +12,8 @@ class NavButton extends Component {
             link=""
         }
         return ( 
-            <Link to={`/${link}`}>
-                <h2>{this.props.name}</h2>
+            <Link className='link' to={`/${link}`} >
+                <h2 className='navButton'>{this.props.name}</h2>
             </ Link>
          );
     }

@@ -1,9 +1,19 @@
 import React from 'react';
+import NewsItem from '../NewsItem'
 
-const Events = () => {
+import {Router} from '@reach/router'
+import NewsList from '../NewsList';
+
+const Events = (props) => {
+    let events=props.events
+    console.log(events)
     return ( 
         <div>
-            <p>Placeholder Events</p>
+            <h2>Events</h2>
+            <Router>
+                <NewsList path='/' articles={events} />
+                <NewsItem path=':id' />
+            </Router>
         </div>
      );
 }

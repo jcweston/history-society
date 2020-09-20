@@ -14,6 +14,9 @@ const Nav = () => {
             <NavButton name="Publications" />
             <NavButton name="Contact Us" />
             <NavButton name="Attributions and Copyright" />
+            <NavButton name="New Article" />
+            <NavButton name="Login" />
+            <br></br>
         </div>
         
      );
