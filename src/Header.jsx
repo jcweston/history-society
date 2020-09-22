@@ -1,8 +1,12 @@
 import React from 'react';
+import header from './Images/Header-Image.png'
 
 const Header = () => {
     return ( 
-        <h1>Chebsey Parish Local History Society</h1>
+        <div className='topBar'>
+            <img src={header} className='headerImage' alt="Chebsey Parish Local History Society"/>
+        </div>
+        
      );
 }
  

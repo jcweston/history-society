@@ -5,7 +5,9 @@ import axios from 'axios'
 class NewsNew extends Component {
     constructor(props) {
         super(props);
-        this.state = {  }
+        this.state = { 
+            isEvent:false
+         }
     }
     render() { 
         return ( 
@@ -22,13 +24,21 @@ class NewsNew extends Component {
                     <label>
                         <input type="radio" id='news' name="topic" value='news' onChange={this.handleChange} />
                         <label for='news'>News</label>
-                        <input type="radio" id='event' name="topic" value='event' onChange={this.handleChange} />
+                        <input type="radio" id='event' name="topic" value='event' onChange={this.checkEvent} />
                         <label for='event'>Event</label>
                     </label>
+                    {this.state.isEvent&&
+                    <label>
+                    <input type='date' name='eventDate'></input>
+                </label>}
                     <button type='submit'>Create Article</button>
                 </form>
             </div>
          );
+    }
+
+    checkEvent = () => {
+        
     }
 
     handleSubmit = (event) => {

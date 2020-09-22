@@ -29,11 +29,8 @@ class App extends Component {
   }
   render() { 
     return ( 
-      <div className='background'>
-      <div className="topBar">
-        <Header />
-      </div>
-      <div className="body">
+      <div className='container'>
+        <Header/>
         <Nav />
         <Router className="page">
           <Home path='/' articles={this.state.articles}/>
@@ -49,7 +46,6 @@ class App extends Component {
           <NewsNew path = 'new%20article' />
           <Login path = 'login' />
         </Router>
-      </div>
     </div>
      )}
 
