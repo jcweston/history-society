@@ -39,7 +39,7 @@ class App extends Component {
           <Events path = 'events/*' events={this.state.events}/>
           <WWI path = 'ww1%20and%20beyond' />
           <Resources path = 'resources' />
-          <Gallery path = 'gallery' />
+          <Gallery path = 'gallery/*' />
           <Publications path = 'publications' />
           <Contact path = 'contact%20us' />
           <Attributions path = 'attributions%20and%20copyright' />
