@@ -17,10 +17,13 @@ class SubGallery extends Component {
             <div className='page'>
                 <p>{this.props.name}</p>
                 <SmartGallery images={this.state.images} />
+                <script async src="//freeimage.host/sdk/pup.js" data-url="https://freeimage.host/upload"></script>
             </div>
             
          );
     }
+
+
 }
 
  
