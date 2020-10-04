@@ -8,8 +8,10 @@ class NewsNew extends Component {
     constructor(props) {
         super(props);
         this.state = { 
+            isLoading:false,
             isEvent:false,
             files: [],
+            isInvalid: false
          }
     }
     render() { 
@@ -40,6 +42,7 @@ class NewsNew extends Component {
                 </form>
                 <br></br>
                 <h2>Upload Photos</h2>
+                {this.state.isInvalid && <h3>Please Enter a Name and Location for Each Picture</h3>}
                 <form 
                 className='newPhoto'
                 onSubmit={(event)=>this.onFileSumbit(event)}>
@@ -55,13 +58,14 @@ class NewsNew extends Component {
                         />
                     </label>
                     <FileInputList 
+                    valid={this.state.valid}
                     files={this.state.files}
                     updateFileInfo={this.updateFileInfo} />
                     <br></br>
-                    <button type='submit'>Submit Photos</button>
+                    <button onClick={(event)=>this.uploadImages(event)}>Submit Photos</button>
                 </form>
             </div>
-         );
+         )
     }
 
     onFileChange = (event) => { 
@@ -95,7 +99,7 @@ class NewsNew extends Component {
         arr.push(obj)
         if (arr.length===count){
            this.setState ({
-            files:arr
+            files:arr,
         }) 
         }
     }
@@ -104,21 +108,58 @@ class NewsNew extends Component {
         let files=this.state.files
         let currentFile={}
         for (let i = 0; i < files.length; i++) {
-            console.log(fileID)
-            console.log(files[i].id)
             if (fileID===files[i].id) {
                 currentFile=files[i]
                 currentFile[infoType]=update
-                console.log(currentFile)
                 files[i]=currentFile
             }
         }
         this.setState({
-            files:files
+            files:files,
         })
 
         return
     }
+
+    uploadImages = (event) => {
+        event.preventDefault()
+        let isValid=this.checkValidation()
+        console.log(isValid)
+        let arr=this.state.files
+        
+        if (isValid) {
+           axios.post("https://chebsy-be.herokuapp.com/api/images",arr)
+        .then(res => {
+          console.log(res)
+        }) 
+        }
+        
+
+    }  
+    
+
+        checkValidation = (valid=true) => {
+            let arr=this.state.files
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i].name==='') {
+                        valid=false
+                    } else if (arr[i].location==='') {
+                        valid=false
+                    }
+                }
+            if (valid===false) {
+               this.setState({
+                isInvalid:true
+            })
+            }
+            
+            return valid
+            
+        }
+ 
+
+        
+
         
     
    

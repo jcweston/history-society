@@ -17,7 +17,7 @@ class FileInputList extends Component {
                             Name (Required) 
                             <input 
                             type='text'
-                            name='text'
+                            name='name'
                             id={element.id}
                             defaultValue={element.name}
                             onChange={this.handleChange}
