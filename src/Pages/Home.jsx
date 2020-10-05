@@ -10,7 +10,6 @@ class Home extends Component {
          }
     }
     render() { 
-        console.log(this.props.articles[0])
         let article=[]
         if (this.props.articles.length===0) {
             article=false

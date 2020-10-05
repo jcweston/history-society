@@ -11,38 +11,48 @@ class NewsNew extends Component {
             isLoading:false,
             isEvent:false,
             files: [],
-            isInvalid: false
+            article: {
+                username: 'admin',
+                title:'',
+                body:'',
+                event:false,
+                eventDate:new Date()
+            },
+            picturesInvalid: false,
+            articleInvalid:false
          }
     }
     render() { 
         return ( 
             <div>
                 <h2>Post Article</h2>
+                {this.state.articleInvalid && <h3>Please Fill all Required Fields</h3>}
                 <form className='newArticle' 
-                onSubmit={this.handleArticleSubmit}>
+                onSubmit={this.articleSubmit}>
                     <label>
                         Title:
-                        <input type="text" name="title" onChange={this.handleChange} />
+                        <input type="text" name="title" onChange={this.onArticleChange} />
                     </label>
                     <label>
                         Body:
-                        <textarea name="body" onChange={this.handleChange} />
+                        <textarea type='text' name="body" onChange={this.onArticleChange} />
                     </label>
                     <label>
-                        <input type="radio" id='news' name="topic" value='news' onChange={this.handleChange} />
+                        <input type="radio" id='news' name="topic" value='news' onChange={this.eventCheck} />
                         <label htmlFor='news'>News</label>
-                        <input type="radio" id='event' name="topic" value='event' onChange={this.checkEvent} />
+                        <input type="radio" id='event' name="topic" value='event' onChange={this.eventCheck} />
                         <label htmlFor='event'>Event</label>
                     </label>
                     {this.state.isEvent&&
                     <label>
-                    <input type='date' name='eventDate'></input>
+                        Event Date:
+                    <input type='date' name='eventDate'  onChange={this.onArticleChange} />
                 </label>}
                     <button type='submit'>Create Article</button>
                 </form>
                 <br></br>
                 <h2>Upload Photos</h2>
-                {this.state.isInvalid && <h3>Please Enter a Name and Location for Each Picture</h3>}
+                {this.state.picturesInvalid && <h3>Please Enter a Name and Location for Each Picture</h3>}
                 <form 
                 className='newPhoto'
                 onSubmit={(event)=>this.onFileSumbit(event)}>
@@ -68,6 +78,23 @@ class NewsNew extends Component {
          )
     }
 
+    onArticleChange = (event) => {
+        let name=event.target.name
+        let type=event.target.type
+        let value=event.target.value
+        let article=this.state.article
+        if (name==='title'||'body') {
+            article[name]=value
+        } else if (type==='radio') {
+            
+        } else if (type==='date') {
+            article.date=value
+        }
+        this.setState({
+            article:article,
+        })
+    }
+
     onFileChange = (event) => { 
         const arr= []
         const count=event.target.files.length
@@ -86,6 +113,23 @@ class NewsNew extends Component {
                 'base64'
             );
         }
+    }
+
+    eventCheck = (event) => {
+        let article=this.state.article
+        let isEvent=false
+        if (event.target.value==='event') {
+            article.event=true
+            isEvent=true
+        } else {
+            article.event=false
+            article.date=''
+            isEvent=false
+        }
+        this.setState({
+            article:article,
+            isEvent:isEvent
+        })
     }
 
     afterFileConvert = (name, uri, count, arr,i) => {
@@ -121,9 +165,64 @@ class NewsNew extends Component {
         return
     }
 
+    
+    
+
+    fileValidation = (valid=true) => {
+            let arr=this.state.files
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i].name===''||arr[i].location==='') {
+                        valid=false
+                    }
+                }
+            if (valid===false) {
+               this.setState({
+                picturesInvalid:true
+            })
+            }
+            
+            return valid
+        }
+
+    articleValidation = () => {
+        let valid=true
+        let article = this.state.article
+        if(article.title===''||article.body==='') {
+            valid=false
+        }
+        if(article.event===false&&article.date==='') {
+            valid=false
+        }
+        if (valid===false) {
+            this.setState({
+                articleInvalid:true
+            })
+        }
+        return valid
+    }
+
+    articleSubmit = (event) => {
+        event.preventDefault()
+        const isValid=this.articleValidation()
+        let article=this.state.article
+        console.log(article)
+        if (isValid) {
+            axios.post("https://chebsy-be.herokuapp.com/api/articles",article)
+        .then(response =>{
+            console.log(response)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+        }
+        
+    }
+
+    //make a user
+
     uploadImages = (event) => {
         event.preventDefault()
-        let isValid=this.checkValidation()
+        const isValid=this.fileValidation()
         console.log(isValid)
         let arr=this.state.files
         
@@ -131,48 +230,13 @@ class NewsNew extends Component {
            axios.post("https://chebsy-be.herokuapp.com/api/images",arr)
         .then(res => {
           console.log(res)
-        }) 
+        })
+        .catch(error => {
+            console.log(error)
+        })
         }
-        
-
     }  
     
-
-        checkValidation = (valid=true) => {
-            let arr=this.state.files
-                for (let i = 0; i < arr.length; i++) {
-                    if (arr[i].name==='') {
-                        valid=false
-                    } else if (arr[i].location==='') {
-                        valid=false
-                    }
-                }
-            if (valid===false) {
-               this.setState({
-                isInvalid:true
-            })
-            }
-            
-            return valid
-            
-        }
- 
-
-        
-
-        
-    
-   
-
-    // onFileSubmit = (event) => {
-    //     event.preventDefault();
-    //     const files = {
-            
-    //     }
-    //     axios.post('https://news-northcoders.herokuapp.com/api/articles',{article}).then(res => {
-    //         console.log(res)
-    //     })
-    // }
 
 }
 
