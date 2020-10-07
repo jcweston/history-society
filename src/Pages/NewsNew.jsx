@@ -30,14 +30,15 @@ class NewsNew extends Component {
                 <form className='newArticle' 
                 onSubmit={this.articleSubmit}>
                     <label>
-                        Title:
+                        <h4>Title (Required):</h4>
                         <input type="text" name="title" onChange={this.onArticleChange} />
                     </label>
                     <label>
-                        Body:
-                        <textarea type='text' name="body" onChange={this.onArticleChange} />
+                        <h4>Body (Required):</h4>
+                        <textarea className='inputTextarea' type='text' name="body" onChange={this.onArticleChange} />
                     </label>
                     <label>
+                        <h4>Article Type (Required):</h4>
                         <input type="radio" id='news' name="topic" value='news' onChange={this.eventCheck} />
                         <label htmlFor='news'>News</label>
                         <input type="radio" id='event' name="topic" value='event' onChange={this.eventCheck} />
@@ -47,7 +48,7 @@ class NewsNew extends Component {
                     <label>
                         Event Date:
                     <input type='date' name='eventDate'  onChange={this.onArticleChange} />
-                </label>}
+                    </label>}
                     <button type='submit'>Create Article</button>
                 </form>
                 <br></br>
@@ -74,8 +75,25 @@ class NewsNew extends Component {
                     <br></br>
                     <button onClick={(event)=>this.uploadImages(event)}>Submit Photos</button>
                 </form>
+                <button onClick={(event)=>this.createAdmin(event)}>Create Admin Account</button>
             </div>
          )
+    }
+
+    createAdmin = (event) => {
+        event.preventDefault();
+        let admin = {
+            username:'admin',
+            name:'admin'
+        }
+        axios.post("https://chebsy-be.herokuapp.com/api/users",admin)
+        .then(response =>{
+            console.log(response)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
     }
 
     onArticleChange = (event) => {
@@ -215,10 +233,7 @@ class NewsNew extends Component {
             console.log(error)
         })
         }
-        
     }
-
-    //make a user
 
     uploadImages = (event) => {
         event.preventDefault()

@@ -20,7 +20,8 @@ html {
 .newArticle {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  align-content: stretch;
+  width:50%
 }
 
 
@@ -112,6 +113,7 @@ html {
 .even {
   background-color: rgb(170, 170, 170);
 }
+
 
 .fileInputForm {
   display: flex;
