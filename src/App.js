@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from './Header'
+import Footer from './Footer'
 import Nav from './Nav'
 import About from './Pages/About'
 import News from './Pages/News'
@@ -10,7 +11,6 @@ import Resources from './Pages/Resources'
 import Gallery from './Pages/Gallery'
 import Publications from './Pages/Publications'
 import Contact from './Pages/Contact'
-import Attributions from './Pages/Attributions'
 import NewsNew from './Pages/NewsNew'
 import Login from './Pages/Login'
 
@@ -32,7 +32,8 @@ class App extends Component {
       <div className='container'>
         <Header/>
         <Nav />
-        <Router className="page">
+        <div className='page'>
+        <Router className='router'>
           <Home path='/' articles={this.state.articles}/>
           <About path='about'/>
           <News path='news/*' articles={this.state.articles}/>
@@ -42,10 +43,11 @@ class App extends Component {
           <Gallery path = 'gallery/*' />
           <Publications path = 'publications' />
           <Contact path = 'contact%20us' />
-          <Attributions path = 'attributions%20and%20copyright' />
           <NewsNew path = 'new%20article' />
           <Login path = 'login' />
         </Router>
+        </div>
+        <Footer className='footer'/>
     </div>
      )}
 

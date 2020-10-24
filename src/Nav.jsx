@@ -12,10 +12,6 @@ const Nav = () => {
             <NavButton name="Resources" />
             <NavButton name="Gallery" />
             <NavButton name="Publications" />
-            <NavButton name="Contact Us" />
-            <NavButton name="Attributions and Copyright" />
-            <NavButton name="New Article" />
-            <NavButton name="Login" />
         </div>
         
      );

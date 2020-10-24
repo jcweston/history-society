@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {Component} from 'react';
 import SubGallery from './SubGallery'
 import GalleryNav from '../GalleryNav'
 import {Router} from '@reach/router'
 
-const Gallery = () => {
-    return ( 
-        <Router className='page'>
+class Gallery extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {  }
+    }
+    render() { 
+        return ( 
+            <Router className='page'>
             <GalleryNav 
                 path='/' />
             <SubGallery 
@@ -15,11 +20,14 @@ const Gallery = () => {
                 path='chebsey' 
                 name='Chebsey'/>
             <SubGallery 
-                path='shallowford' />
+                path='shallowford'
+                name='Shallowford'/>
             <SubGallery 
                 path='other' />
         </Router>
-     );
+         );
+    }
+   
 }
  
 export default Gallery;

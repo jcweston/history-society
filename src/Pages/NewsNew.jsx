@@ -19,7 +19,8 @@ class NewsNew extends Component {
                 eventDate:new Date()
             },
             picturesInvalid: false,
-            articleInvalid:false
+            articleInvalid:false,
+            userArr:[]
          }
     }
     render() { 
@@ -55,8 +56,7 @@ class NewsNew extends Component {
                 <h2>Upload Photos</h2>
                 {this.state.picturesInvalid && <h3>Please Enter a Name and Location for Each Picture</h3>}
                 <form 
-                className='newPhoto'
-                onSubmit={(event)=>this.onFileSumbit(event)}>
+                className='newPhoto'>
                     <label className='fileUpload'>
                         <p>Click 'Choose Files' to Upload Photos:</p>
                         <input 
@@ -75,12 +75,41 @@ class NewsNew extends Component {
                     <br></br>
                     <button onClick={(event)=>this.uploadImages(event)}>Submit Photos</button>
                 </form>
-                <button onClick={(event)=>this.createAdmin(event)}>Create Admin Account</button>
+                <h2>Make New Account</h2>
+                <form>
+                    <label>
+                        Account Name
+                        <input type='text' />
+                    </label>
+                    <button onClick={(event)=>this.createAccount(event)}>Create Account</button>
+                </form>
+                
+                <h3>List of Accounts</h3>
+                {this.state.userArr.map((element,i) => {
+                    const username=element.username
+                    return (
+                        <p key={i}>{username}</p>
+                    )
+                })}
             </div>
          )
     }
 
-    createAdmin = (event) => {
+    componentDidMount = () => {
+        this.getAccounts()
+    }
+
+    getAccounts = () => [
+        axios.get('https://chebsy-be.herokuapp.com/api/users')
+        .then(response=>{
+            this.setState({
+                userArr:response.data.users
+            })
+            console.log(response.data.users)
+        })
+    ]
+
+    createAccount = (event) => {
         event.preventDefault();
         let admin = {
             username:'admin',
@@ -106,7 +135,7 @@ class NewsNew extends Component {
         } else if (type==='radio') {
             
         } else if (type==='date') {
-            article.date=value
+            article.eventDate=value
         }
         this.setState({
             article:article,
@@ -141,7 +170,6 @@ class NewsNew extends Component {
             isEvent=true
         } else {
             article.event=false
-            article.date=''
             isEvent=false
         }
         this.setState({
@@ -208,7 +236,7 @@ class NewsNew extends Component {
         if(article.title===''||article.body==='') {
             valid=false
         }
-        if(article.event===false&&article.date==='') {
+        if(article.event===true&&article.date==='') {
             valid=false
         }
         if (valid===false) {
@@ -223,11 +251,14 @@ class NewsNew extends Component {
         event.preventDefault()
         const isValid=this.articleValidation()
         let article=this.state.article
+        if (!article.event) {
+            delete article.eventDate
+        }
         console.log(article)
         if (isValid) {
             axios.post("https://chebsy-be.herokuapp.com/api/articles",article)
         .then(response =>{
-            console.log(response)
+            this.resetArticle()
         })
         .catch(error => {
             console.log(error)
@@ -240,7 +271,10 @@ class NewsNew extends Component {
         const isValid=this.fileValidation()
         console.log(isValid)
         let arr=this.state.files
-        
+        for (let i = 0; i < arr.length; i++) {
+            delete arr[i].id
+        }
+        console.log(arr);
         if (isValid) {
            axios.post("https://chebsy-be.herokuapp.com/api/images",arr)
         .then(res => {

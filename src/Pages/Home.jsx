@@ -18,13 +18,13 @@ class Home extends Component {
         }
         return ( 
             <div className='homeBox'>
+                <div className='postcard'>
+                    <img src={postcard} alt='Norton Bridge Postcard' className="homeImage"/>
+                </div>
                 <div className='homeColumn'>
                     <h3>Recent News</h3> 
                     {this.checkLoading(article)}
                     <h3>Upcoming Events</h3>
-                </div>
-                <div className='postcard'>
-                    <img src={postcard} alt='Norton Bridge Postcard' className="homeImage"/>
                 </div>
                
             </div>
